@@ -7,11 +7,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.ui.screens.mainScreen.eshraqaMainActivity.MainActivity"
+    android:background="@drawable/rectangle"
+    android:orientation="vertical"
     >
+  <include layout="@layout/app_toolbar"/>
 
   <FrameLayout
       android:id="@+id/fragmentsContainer"
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="1"
       />
 </LinearLayout>

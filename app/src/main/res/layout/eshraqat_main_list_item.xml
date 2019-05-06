@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:sml="http://schemas.android.com/apk/res-auto"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="eshraqa"
+            type="com.kheer.eshraqa.data.service.responseModel.EshraqatResponse.Eshraqa" />
+    </data>
 
   <androidx.cardview.widget.CardView
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_margin="@dimen/_8sdp"
+      android:layout_margin="@dimen/_4sdp"
+
       >
   <com.tubb.smrv.SwipeHorizontalMenuLayout
       android:id="@+id/sml"
@@ -22,25 +27,22 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           >
-        <TextView
-            android:id="@+id/eshraqaText2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:lines="2"
-            />
+        <include
+            android:id="@+id/mainView"
+            layout="@layout/list_item_eshraqa_main_view"
+            app:model="@{eshraqa}"/>
       </androidx.constraintlayout.widget.ConstraintLayout>
     <LinearLayout
         android:id="@+id/smMenuViewLeft"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/_60sdp"
+        android:layout_height="match_parent"
         android:layout_alignParentEnd="true"
         >
-      <Button
-          android:id="@+id/testSwipeable"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          />
+        <include
+            android:id="@+id/swipeView"
+            layout="@layout/list_item_swipe_view"
+            app:isFav="@{eshraqa.isFavourite}"
+            />
     </LinearLayout>
   </com.tubb.smrv.SwipeHorizontalMenuLayout>
 </androidx.cardview.widget.CardView>

@@ -1,32 +1,163 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="@dimen/_16sdp"
+  <data>
+    <variable
+        name="model"
+        type="com.kheer.eshraqa.data.service.responseModel.EshraqatResponse.Eshraqa" />
+  </data>
+
+  <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_marginStart="4dp"
+      android:layout_marginTop="@dimen/_10sdp"
+      android:layout_marginEnd="4dp"
+      android:layout_marginBottom="@dimen/_10sdp"
+      android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
     android:background="@android:color/white"
     app:cardCornerRadius="8dp"
-    app:cardElevation="8dp"
+        android:clipChildren="false"
+        app:cardElevation="4dp"
     >
   <androidx.constraintlayout.widget.ConstraintLayout
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       >
+
+    <ImageView
+        android:id="@+id/groupIcon"
+        android:layout_width="@dimen/_24sdp"
+        android:layout_height="@dimen/_24sdp"
+        android:layout_margin="@dimen/_8sdp"
+        android:src="@drawable/eshraqa_logo2"
+        app:layout_constraintBottom_toBottomOf="@id/date"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/title"
+        />
+
+    <ImageButton
+        android:id="@+id/addToFav"
+        android:layout_width="@dimen/_24sdp"
+        android:layout_height="@dimen/_24sdp"
+        android:layout_margin="@dimen/_8sdp"
+        android:background="@android:color/transparent"
+        android:src="@{model.favourite?@drawable/ic_favorite_heart_full:@drawable/ic_favorite_heart}"
+        app:layout_constraintBottom_toBottomOf="@id/date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/title"
+
+
+        />
+
     <TextView
-        android:id="@+id/eshraqaText"
-        android:layout_width="wrap_content"
+        android:id="@+id/title"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="@dimen/_2sdp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_marginEnd="@dimen/_2sdp"
+        fontPath="fonts/Cairo-Bold.ttf"
+        android:gravity="center"
+        android:text="@{model.title}"
+        android:textColor="@color/goldColor"
+        android:textSize="@dimen/_12ssp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/date"
+        app:layout_constraintEnd_toStartOf="@id/addToFav"
+        app:layout_constraintStart_toEndOf="@id/groupIcon"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_2sdp"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:layout_marginEnd="@dimen/_2sdp"
+        fontPath="fonts/Cairo-Bold.ttf"
+        android:gravity="center"
+        android:textSize="@dimen/_10ssp"
+        android:textColor="@color/blueColor"
+        android:text="@{model.hijriDate}"
+        app:layout_constraintBottom_toBottomOf="@id/groupIcon"
+        app:layout_constraintEnd_toEndOf="@id/title"
+        app:layout_constraintStart_toStartOf="@id/title"
+        app:layout_constraintTop_toBottomOf="@id/title" />
+
+    <TextView
+        android:id="@+id/body"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/date"
+        app:layout_constraintHeight_percent=".7"
+        android:padding="@dimen/_8sdp"
+        android:textSize="@dimen/_12ssp"
+        fontPath="fonts/Cairo-Bold.ttf"
+
+        android:scrollbars="vertical"
+        android:text="@{model.body}"
+
+
         />
+
+    <View
+        android:id="@+id/separator"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="#666666"
+        fontPath="fonts/Cairo-Bold.ttf"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/body"
+        />
+
+    <TextView
+        android:id="@+id/zekrTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/separator"
+        app:layout_constraintHorizontal_bias="0"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:text="ذكر اليوم"
+        android:textSize="@dimen/_10ssp"
+        android:textColor="@color/goldColor"
+        />
+
+    <TextView
+        android:id="@+id/zekrBody"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="@{model.zekrBody}"
+        android:textColor="@color/blueColor"
+        app:layout_constraintStart_toStartOf="@id/zekrTitle"
+        app:layout_constraintTop_toBottomOf="@id/zekrTitle"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:textSize="@dimen/_10ssp"
+        />
+
+
   </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>
+
+    <ImageButton
+        android:id="@+id/share"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_8sdp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/share"
+        />
+  </LinearLayout>
 </layout>

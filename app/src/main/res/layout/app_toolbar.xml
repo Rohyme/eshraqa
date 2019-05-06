@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/barContainer"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:background="@android:color/transparent"
+    android:layout_height="?android:attr/actionBarSize"
+    android:gravity="center"
+    >
+    <ImageButton
+        android:id="@+id/previous"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/arrow_left"
+        android:padding="@dimen/_8sdp"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginEnd="@dimen/_20sdp"
+        />
+
+    <ImageButton
+        android:id="@+id/next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:src="@drawable/arrow_rigth"
+        android:padding="@dimen/_8sdp"
+        android:background="@android:color/transparent"
+        android:layout_marginStart="@dimen/_20sdp"
+        />
+    <Spinner
+        android:id="@+id/titleSpinner"
+        fontPath="fonts/Cairo-Bold.ttf"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dialog"
+        android:paddingEnd="@dimen/_30sdp"
+        android:background="@drawable/spinner_background"
+        app:layout_constraintStart_toEndOf="@+id/next"
+        app:layout_constraintEnd_toStartOf="@id/previous"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintWidth_default="wrap"
+        android:textColor="@color/goldColor"
+        android:textSize="@dimen/_14ssp"
+        tools:layout_editor_absoluteX="194dp"
+        tools:layout_editor_absoluteY="16dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

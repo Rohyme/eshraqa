@@ -2,12 +2,21 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/goldColor"
+
+    >
 
   <androidx.recyclerview.widget.RecyclerView
       android:id="@+id/eshraqatList"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
+      android:paddingEnd="12dp"
+      android:paddingStart="12dp"
+      android:clipToPadding="false"
+      android:layout_marginBottom="@dimen/_20sdp"
+
+
       />
 
 </LinearLayout>

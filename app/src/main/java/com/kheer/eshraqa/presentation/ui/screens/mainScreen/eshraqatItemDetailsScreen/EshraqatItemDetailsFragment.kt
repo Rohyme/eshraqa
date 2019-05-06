@@ -1,33 +1,38 @@
 package com.kheer.eshraqa.presentation.ui.screens.mainScreen.eshraqatItemDetailsScreen
 
-import androidx.lifecycle.ViewModel
-import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModel
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.kheer.eshraqa.R
-import com.kheer.eshraqa.R.layout
-import com.kheer.eshraqa.presentation.appUtils.LinearLayoutManagerWrapper
+import com.kheer.eshraqa.data.service.responseModel.EshraqatResponse
 import com.kheer.eshraqa.databinding.EshraqatDetailsListItemBinding
+import com.kheer.eshraqa.presentation.appUtils.LinearLayoutManagerWrapper
+import com.kheer.eshraqa.presentation.appUtils.shareEshraqa
+import com.kheer.eshraqa.presentation.appUtils.toggleFavourite
 import com.kheer.eshraqa.presentation.ui.base.BaseFragmentWithInjector
+import com.kheer.eshraqa.presentation.ui.screens.mainScreen.eshraqaMainActivity.MainActivity
 import com.tripl3dev.luffyyview.baseAdapter.BaseListAdapter
 import com.tripl3dev.luffyyview.baseAdapter.MainHolderInterface
-import kotlinx.android.synthetic.main.eshraqat_details_fragment.eshraqatList
-import java.util.ArrayList
+import kotlinx.android.synthetic.main.eshraqat_details_fragment.*
+import kotlinx.android.synthetic.main.eshraqat_details_list_item.*
+import java.util.*
 
 class EshraqatItemDetailsFragment :BaseFragmentWithInjector(){
   lateinit var viewModel :EshraqatItemDetailsViewModel
-  lateinit var mAdapter :BaseListAdapter<String>
+  lateinit var mAdapter: BaseListAdapter<EshraqatResponse.Eshraqa>
 
   companion object {
     const val TAG="EshraqatItemDetailsFragment"
     const val ESHRAQA_ITEM_POSITION = "ESHRAQA_ITEM_POSITION"
     const val ESHRAQAT_LIST = "ESHRAQAT_LIST"
     fun newInstance(
-      currentItem: Int,
-      eshraqatList: ArrayList<String>
+            currentItem: Int,
+            eshraqatList: ArrayList<EshraqatResponse.Eshraqa>
     ) =
       EshraqatItemDetailsFragment().apply {
         arguments = Bundle().apply {
@@ -49,7 +54,8 @@ class EshraqatItemDetailsFragment :BaseFragmentWithInjector(){
     viewModel =  vm as EshraqatItemDetailsViewModel
 
     currentItem = arguments?.getInt(ESHRAQA_ITEM_POSITION, 0)
-    viewModel.mainEshraqatList = arguments?.getSerializable(ESHRAQAT_LIST) as ArrayList<String>
+    currentPosition = currentItem?:0
+    viewModel.mainEshraqatList = arguments?.getSerializable(ESHRAQAT_LIST) as ArrayList<EshraqatResponse.Eshraqa>
   }
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -69,29 +75,63 @@ class EshraqatItemDetailsFragment :BaseFragmentWithInjector(){
 
 
   private fun setUpEshraqatList() {
-    mAdapter= BaseListAdapter(object : MainHolderInterface<String> {
+    mAdapter = BaseListAdapter(object : MainHolderInterface<EshraqatResponse.Eshraqa> {
       override fun getView(type: Int): Int {
-        return  layout.eshraqat_details_list_item
+        return R.layout.eshraqat_details_list_item
       }
 
       override fun getViewData(
-        holder: ViewHolder,
-        t: String,
-        position: Int
+              holder: ViewHolder,
+              t: EshraqatResponse.Eshraqa,
+              position: Int
       ) {
         val itemBinding = DataBindingUtil.bind<EshraqatDetailsListItemBinding>(holder.itemView)
-        itemBinding?.eshraqaText?.text = t
+        itemBinding?.model = t
+        itemBinding?.addToFav?.setOnClickListener {
+          t.isFavourite = !t.isFavourite
+          viewModel.addToFav(t.id)
+          itemBinding.addToFav.toggleFavourite(t.isFavourite,false)
+        }
+        itemBinding?.share?.setOnClickListener {
+          shareEshraqa(t.title,t.body)
+        }
       }
 
     },context!!)
     val snapHelper = androidx.recyclerview.widget.PagerSnapHelper()
     snapHelper.attachToRecyclerView(eshraqatList)
-    eshraqatList.layoutManager = LinearLayoutManagerWrapper(context, androidx.recyclerview.widget.RecyclerView.HORIZONTAL,false)
+    val layoutMan = LinearLayoutManagerWrapper(context, RecyclerView.HORIZONTAL, false)
+    eshraqatList.layoutManager = layoutMan
     mAdapter.originalList =viewModel.mainEshraqatList
     eshraqatList.adapter =mAdapter
+    eshraqatList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+      override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+        super.onScrollStateChanged(recyclerView, newState)
+        if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+          currentPosition = layoutMan.findFirstCompletelyVisibleItemPosition()
+        }
+      }
+    })
     eshraqatList.scrollToPosition(currentItem!!)
   }
+
+  var currentPosition: Int = 0
   override fun isRetained(): Boolean {
     return false
   }
+
+  override fun onResume() {
+    super.onResume()
+    (activity as MainActivity).setCurrentFragment(true)
+    (activity as MainActivity).arrowsListeners({
+      if (currentPosition -1 >= 0){
+        eshraqatList.smoothScrollToPosition(currentPosition-1)
+      }
+    }, {
+      if (currentPosition +1 < mAdapter.itemCount){
+        eshraqatList.smoothScrollToPosition(currentPosition+1)
+      }
+    })
+  }
+
 }

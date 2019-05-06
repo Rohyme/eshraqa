@@ -2,9 +2,10 @@ package com.kheer.eshraqa.presentation.di.modules
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.google.gson.Gson
 import com.kheer.eshraqa.presentation.myApp.MyApplication
 import com.kheer.eshraqa.presentation.appUtils.Constants
-import com.kheer.eshraqa.presentation.appUtils.SharedPreferenceUtil
+import com.kheer.eshraqa.presentation.appUtils.languageUtils.SharedPreferenceUtil
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -19,7 +20,7 @@ class SharedPreferenceModule {
 
   @Provides
   @Singleton
-  fun provideSharedPreferenceUtil(sharedPreference: SharedPreferences): SharedPreferenceUtil {
-    return SharedPreferenceUtil(sharedPreference)
+  fun provideSharedPreferenceUtil(sharedPreference: SharedPreferences,gson :Gson): SharedPreferenceUtil {
+    return SharedPreferenceUtil(sharedPreference,gson)
   }
 }
